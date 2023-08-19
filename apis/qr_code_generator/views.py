@@ -26,6 +26,7 @@ def generate_abstract_art(size):
 def generate_qr_code():
     try:
         raw_url = request.json.get('raw_url')
+        randomize_color = request.json.get('randomize_color')
 
         if not raw_url:
             return jsonify({'error': 'No raw URL provided'}), 400
@@ -52,7 +53,8 @@ def generate_qr_code():
         new_img = Image.blend(img, abstract_art, alpha=0.5)
 
         # TODO: Usman-you can use this code incase user ants to just make a simple black and white QR code
-        # new_img = Image.blend(img, img, alpha=0.5)
+        if not randomize_color:
+            new_img = Image.blend(img, img, alpha=0.5)
 
         output_buffer = BytesIO()
         new_img.save(output_buffer, format="PNG")
